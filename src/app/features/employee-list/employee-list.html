@@ -1,1 +1,67 @@
-<p>employee-list works!</p>
+<div class="container">
+    <div class="header-section">
+        <h2>Employee List</h2>
+        <button class="btn-primary" (click)="navigateToAdd()">+ Add Employee</button>
+    </div>
+
+    <div *ngIf="notifMessage" class="notification" [ngClass]="notifType">
+        {{ notifMessage }}
+    </div>
+
+    <div class="toolbar">
+        <div class="search-box">
+            <input type="text" [(ngModel)]="searchUsername" (input)="onSearch()" placeholder="Search Username...">
+            <input type="text" [(ngModel)]="searchGroup" (input)="onSearch()" placeholder="Search Group...">
+        </div>
+
+        <div class="page-size-box">
+            <label for="pageSize">Items per page: </label>
+            <select id="pageSize" [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+                <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th (click)="onSort('username')" class="sortable">Username <span
+                            *ngIf="sortColumn === 'username'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span></th>
+                    <th (click)="onSort('firstName')" class="sortable">Full Name <span
+                            *ngIf="sortColumn === 'firstName'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span></th>
+                    <th (click)="onSort('email')" class="sortable">Email</th>
+                    <th (click)="onSort('group')" class="sortable">Group <span *ngIf="sortColumn === 'group'">{{
+                            sortDirection === 'asc' ? '↑' : '↓' }}</span></th>
+                    <th (click)="onSort('status')" class="sortable">Status <span *ngIf="sortColumn === 'status'">{{
+                            sortDirection === 'asc' ? '↑' : '↓' }}</span></th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let emp of displayedEmployees">
+                    <td>{{ emp.username }}</td>
+                    <td>{{ emp.firstName }} {{ emp.lastName }}</td>
+                    <td>{{ emp.email }}</td>
+                    <td>{{ emp.group }}</td>
+                    <td>
+                        <span class="status-badge" [ngClass]="emp.status.toLowerCase()">{{ emp.status }}</span>
+                    </td>
+                    <td class="action-buttons">
+                        <button class="btn-edit" (click)="onEdit(emp)">Edit</button>
+                        <button class="btn-delete" (click)="onDelete(emp)">Delete</button>
+                    </td>
+                </tr>
+                <tr *ngIf="displayedEmployees.length === 0">
+                    <td colspan="6" class="text-center">No data found.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination" *ngIf="totalPages > 0">
+        <button [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">Previous</button>
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+        <button [disabled]="currentPage === totalPages" (click)="onPageChange(currentPage + 1)">Next</button>
+    </div>
+</div>
