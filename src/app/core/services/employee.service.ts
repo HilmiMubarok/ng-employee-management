@@ -53,4 +53,7 @@ export class EmployeeService {
     return this.groups;
   }
 
+  addEmployee(employee: Employee): void {
+    this.employees.unshift(employee);
+  }
 }

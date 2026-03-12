@@ -1,1 +1,115 @@
-<p>employee-add works!</p>
+<div class="container">
+    <div class="form-card">
+        <h2>Add New Employee</h2>
+
+        <form [formGroup]="addForm" (ngSubmit)="onSave()">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Username <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="username" placeholder="Enter username">
+                    <small class="error" *ngIf="f['username'].invalid && f['username'].touched">Username is
+                        required.</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Email <span class="text-danger">*</span></label>
+                    <input type="email" formControlName="email" placeholder="example@mail.com">
+                    <small class="error" *ngIf="f['email'].errors?.['required'] && f['email'].touched">Email is
+                        required.</small>
+                    <small class="error" *ngIf="f['email'].errors?.['email'] && f['email'].touched">Invalid email
+                        format.</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>First Name <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="firstName" placeholder="First name">
+                    <small class="error" *ngIf="f['firstName'].invalid && f['firstName'].touched">First name is
+                        required.</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Last Name <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="lastName" placeholder="Last name">
+                    <small class="error" *ngIf="f['lastName'].invalid && f['lastName'].touched">Last name is
+                        required.</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Birth Date <span class="text-danger">*</span></label>
+                    <input type="date" formControlName="birthDate" [max]="maxDate">
+                    <small class="error" *ngIf="f['birthDate'].errors?.['required'] && f['birthDate'].touched">Birth
+                        date is required.</small>
+                    <small class="error" *ngIf="f['birthDate'].errors?.['maxDate'] && f['birthDate'].touched">Date
+                        cannot exceed today.</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Basic Salary <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="basicSalary" placeholder="e.g. 5000000">
+                    <small class="error"
+                        *ngIf="f['basicSalary'].errors?.['required'] && f['basicSalary'].touched">Salary is
+                        required.</small>
+                    <small class="error" *ngIf="f['basicSalary'].errors?.['pattern'] && f['basicSalary'].touched">Must
+                        be a valid number.</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Status <span class="text-danger">*</span></label>
+                    <select formControlName="status">
+                        <option value="" disabled>Select Status</option>
+                        <option value="Permanent">Permanent</option>
+                        <option value="Contract">Contract</option>
+                        <option value="Probation">Probation</option>
+                    </select>
+                    <small class="error" *ngIf="f['status'].invalid && f['status'].touched">Status is required.</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Group <span class="text-danger">*</span></label>
+
+                    <div class="custom-dropdown" (clickOutside)="showGroupDropdown = false">
+                        <div class="dropdown-header" (click)="toggleDropdown()"
+                            [class.invalid]="f['group'].invalid && f['group'].touched">
+                            {{ f['group'].value || 'Select Group' }}
+                            <span class="arrow">&#9662;</span>
+                        </div>
+
+                        <div class="dropdown-list" *ngIf="showGroupDropdown">
+                            <div class="dropdown-search">
+                                <input type="text" placeholder="Search group..." (input)="onSearchGroup($event)"
+                                    (click)="$event.stopPropagation()">
+                            </div>
+                            <ul class="options">
+                                <li *ngFor="let group of filteredGroups" (click)="selectGroup(group)">
+                                    {{ group }}
+                                </li>
+                                <li *ngIf="filteredGroups.length === 0" class="no-results">No group found</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <input type="hidden" formControlName="group">
+                    <small class="error" *ngIf="f['group'].invalid && f['group'].touched">Group is required.</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Description <span class="text-danger">*</span></label>
+                <input type="date" formControlName="description">
+                <small class="error" *ngIf="f['description'].invalid && f['description'].touched">Description is
+                    required.</small>
+            </div>
+
+            <div class="action-buttons">
+                <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
+                <button type="submit" class="btn-save">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
