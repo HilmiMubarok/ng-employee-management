@@ -1,1 +1,48 @@
-<p>employee-detail works!</p>
+<div class="container">
+    <div class="detail-card" *ngIf="employee; else notFound">
+        <h2>Employee Detail</h2>
+        <hr>
+
+        <div class="detail-grid">
+            <div class="detail-item">
+                <label>Username</label>
+                <p>{{ employee.username }}</p>
+            </div>
+            <div class="detail-item">
+                <label>Full Name</label>
+                <p>{{ employee.firstName }} {{ employee.lastName }}</p>
+            </div>
+            <div class="detail-item">
+                <label>Email</label>
+                <p>{{ employee.email }}</p>
+            </div>
+            <div class="detail-item">
+                <label>Birth Date</label>
+                <p>{{ employee.birthDate | date:'longDate' }}</p>
+            </div>
+            <div class="detail-item">
+                <label>Group</label>
+                <p>{{ employee.group }}</p>
+            </div>
+            <div class="detail-item">
+                <label>Status</label>
+                <p><span class="badge" [ngClass]="employee.status.toLowerCase()">{{ employee.status }}</span></p>
+            </div>
+            <div class="detail-item highlight">
+                <label>Basic Salary</label>
+                <p class="salary">{{ formatRupiah(employee.basicSalary) }}</p>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn-ok" (click)="goBack()">OK</button>
+        </div>
+    </div>
+
+    <ng-template #notFound>
+        <div class="detail-card text-center">
+            <h2>Employee Not Found</h2>
+            <button class="btn-ok" (click)="goBack()">Back to List</button>
+        </div>
+    </ng-template>
+</div>

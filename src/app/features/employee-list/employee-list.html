@@ -48,6 +48,7 @@
                         <span class="status-badge" [ngClass]="emp.status.toLowerCase()">{{ emp.status }}</span>
                     </td>
                     <td class="action-buttons">
+                        <button class="btn-detail" (click)="navigateToDetail(emp)">Detail</button>
                         <button class="btn-edit" (click)="onEdit(emp)">Edit</button>
                         <button class="btn-delete" (click)="onDelete(emp)">Delete</button>
                     </td>

@@ -38,10 +38,27 @@ export class EmployeeList {
 
   ngOnInit(): void {
     this.allEmployees = this.employeeService.getEmployees();
+
+    this.searchUsername = this.employeeService.listState.searchUsername;
+    this.searchGroup = this.employeeService.listState.searchGroup;
+    this.sortColumn = this.employeeService.listState.sortColumn as keyof Employee | '';
+    this.sortDirection = this.employeeService.listState.sortDirection;
+    this.pageSize = this.employeeService.listState.pageSize;
+    this.currentPage = this.employeeService.listState.currentPage;
+    
     this.processData();
   }
 
   processData(): void {
+    this.employeeService.listState = {
+      searchUsername: this.searchUsername,
+      searchGroup: this.searchGroup,
+      sortColumn: this.sortColumn,
+      sortDirection: this.sortDirection,
+      currentPage: this.currentPage,
+      pageSize: this.pageSize,
+    };
+
     this.filteredEmployees = this.allEmployees.filter((emp) => {
       const matchUsername = emp.username.toLowerCase().includes(this.searchUsername.toLowerCase());
       const matchGroup = emp.group.toLowerCase().includes(this.searchGroup.toLowerCase());
@@ -103,6 +120,10 @@ export class EmployeeList {
     this.router.navigate(['/employee-add']);
   }
 
+  navigateToDetail(employee: Employee): void {
+    this.router.navigate(['/employee-detail', employee.username]);
+  }
+  
   onEdit(employee: Employee): void {
     this.notifType = 'edit';
     this.notifMessage = `Data ${employee.username} sedang di-edit.`;

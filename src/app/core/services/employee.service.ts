@@ -7,6 +7,15 @@ import { Employee } from '../models/employee.model';
 export class EmployeeService {
   private employees: Employee[] = [];
 
+  public listState = {
+    searchUsername: '',
+    searchGroup: '',
+    sortColumn: '',
+    sortDirection: 'asc' as 'asc' | 'desc',
+    currentPage: 1,
+    pageSize: 10,
+  };
+
   private groups: string[] = [
     'Engineering',
     'Product',
@@ -55,5 +64,9 @@ export class EmployeeService {
 
   addEmployee(employee: Employee): void {
     this.employees.unshift(employee);
+  }
+
+  getEmployeeByUsername(username: string): Employee | undefined {
+    return this.employees.find((emp) => emp.username === username);
   }
 }
